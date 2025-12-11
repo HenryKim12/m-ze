@@ -1,6 +1,6 @@
 #pragma once
 
 struct Position {
-	int x;
-	int y;
+	SHORT x;
+	SHORT y;
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "map.h"
 #include "position.h"
 #include "constants.h"
 
@@ -10,10 +11,10 @@
 
 class Hero {
 public:
-    Hero();
+    Hero(const SHORT consoleX, const SHORT consoleY);
 
-    int x() { return pos_.x; }
-    int y() { return pos_.y; }
+    SHORT x() { return pos_.x; }
+    SHORT y() { return pos_.y; }
     void setX(const int x) { pos_.x = x; }
     void setY(const int y) { pos_.y = y; }
 
@@ -23,6 +24,6 @@ private:
     Position pos_ = HERO_START;
     char body_ = HERO_BODY;
     int health_ = 100;
-    int speed_ = 1;
+    Map map_;
 };
 

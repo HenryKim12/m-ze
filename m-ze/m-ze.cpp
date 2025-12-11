@@ -1,7 +1,6 @@
 #pragma once
 
 #include "hero.h"
-#include "map.h"
 #include "position.h"
 #include "constants.h"
 
@@ -39,11 +38,11 @@ COORD initConsole() {
 int main()
 {
     COORD consoleDimensions = initConsole();
-    Hero hero;
+    Hero hero(consoleDimensions.X, consoleDimensions.Y);
     char input = ' ';
     while (input != 'q') {
         hero.move(input, consoleDimensions.X, consoleDimensions.Y);
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
 
