@@ -1,20 +1,50 @@
-// m-ze.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#pragma once
+
+#include "hero.h"
+#include "map.h"
+#include "position.h"
+#include "constants.h"
 
 #include <iostream>
+#include <Windows.h>
+#include <chrono>
+#include <thread>
+#include <conio.h>
+
+COORD initConsole() {
+    // set to fullscreen
+    HWND consoleWindow = GetConsoleWindow();
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    COORD coord;
+    ShowWindow(consoleWindow, SW_MAXIMIZE);
+    GetConsoleScreenBufferInfo(hConsole, &csbi);
+    coord.X = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    coord.Y = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    SetConsoleScreenBufferSize(hConsole, coord);
+
+    // hide the cursor
+    CONSOLE_CURSOR_INFO cursorInfo;
+    GetConsoleCursorInfo(hConsole, &cursorInfo);
+    cursorInfo.bVisible = FALSE;
+    SetConsoleCursorInfo(hConsole, &cursorInfo);
+
+    // set the text color 
+    GetConsoleScreenBufferInfo(hConsole, &csbi);
+    SetConsoleTextAttribute(hConsole, (csbi.wAttributes & 0xF0) | 10);
+
+    return coord;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    COORD consoleDimensions = initConsole();
+    Hero hero;
+    char input = ' ';
+    while (input != 'q') {
+        hero.move(input, consoleDimensions.X, consoleDimensions.Y);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+ 
